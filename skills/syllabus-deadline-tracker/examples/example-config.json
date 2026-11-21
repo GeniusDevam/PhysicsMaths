@@ -1,0 +1,37 @@
+{
+  "id": "orgchem-finals",
+  "title": "Organic Chemistry Finals",
+  "subtitle": "Ten weeks, one reaction at a time.",
+  "start": "2026-10-12",
+  "deadline": "2026-12-18",
+  "hoursPerDay": 4,
+  "maxHoursPerDay": 6,
+  "bufferDays": 5,
+  "offWeekdays": [0, 6],
+  "daysOff": ["2026-11-26"],
+  "theme": "paper",
+  "tasks": [
+    {"title": "Structure, bonding and acid-base", "kind": "chemistry", "hours": 20, "hint": "Khan Academy Organic Chemistry; MIT OCW 5.12"},
+    {"title": "Stereochemistry", "kind": "chemistry", "hours": 18, "hint": "Khan Academy: stereochemistry"},
+    {"title": "Substitution and elimination", "kind": "chemistry", "hours": 28, "hint": "Khan Academy: substitution and elimination"},
+    {"title": "Mock exam 1", "kind": "gate", "hours": 5, "hint": "Timed past paper, then correct every error"},
+    {"title": "Alkenes and alkynes", "kind": "chemistry", "hours": 24, "hint": "Khan Academy: alkenes and alkynes"},
+    {"title": "Alcohols, ethers and epoxides", "kind": "chemistry", "hours": 20, "hint": "Khan Academy: alcohols, ethers, epoxides"},
+    {"title": "Carbonyl chemistry", "kind": "chemistry", "hours": 30, "hint": "Khan Academy: aldehydes and ketones; carboxylic acids"},
+    {"title": "Spectroscopy", "kind": "chemistry", "hours": 18, "hint": "Khan Academy: spectroscopy; MIT OCW 5.12"},
+    {"title": "Mock exam 2", "kind": "gate", "hours": 5, "hint": "Timed past paper, then correct every error"}
+  ],
+  "lessons": {
+    "Structure, bonding and acid-base": [
+      ["Orbitals, hybridisation and resonance", 5, "Learn: sp, sp2 and sp3 bonding, drawing resonance structures, formal charge. Do: 20 structure-drawing problems.", "Khan Academy Organic Chemistry: structure and bonding"],
+      ["Functional groups and nomenclature", 5, "Learn: the main functional groups and IUPAC naming. Do: name 30 molecules and make flashcards.", "Khan Academy: naming organic compounds"],
+      ["Acids, bases and pKa", 5, "Learn: Bronsted acidity, pKa, factors that stabilise a conjugate base. Do: rank 15 sets of acids.", "Khan Academy: acid-base reactions"],
+      ["Conformations and strain", 5, "Learn: Newman projections, chair cyclohexane, steric strain. Do: draw 10 chair flips.", "Khan Academy: conformations of alkanes and cycloalkanes"]
+    ]
+  },
+  "phases": [{"name": "Winter break: practice papers", "hours": 40, "note": "Past papers only"}],
+  "motivation": [
+    ["Every mechanism is just electrons going somewhere sensible.", "Draw the arrows before you memorise anything.", "Day-one reminder"],
+    ["Mistakes in the error log are free points on exam day.", "", "Study rule"]
+  ]
+}

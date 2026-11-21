@@ -1,0 +1,167 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Syllabus Tracker</title>
+<style>
+:root{--bg:#060814;--cd:rgba(12,17,46,.74);--ink:#e8eefc;--mu:#9aa6c9;--ac:#5de0ec;--gd:#ffb347;--bd:#ff8a6b;--ln:rgba(125,145,230,.28);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:.8rem 1rem 0;font:700 1.3rem Georgia,serif}
+nav{display:flex;gap:.3rem;overflow-x:auto;padding:.5rem 1rem}
+nav button{flex:none;border:1px solid var(--ln);background:var(--cd);color:var(--ink);padding:.45rem .8rem;border-radius:99px}
+nav button.on{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+main{max-width:640px;margin:0 auto;padding:0 1rem 3rem}
+h2{font:700 1.25rem Georgia,serif;margin:.6rem 0}
+.c{background:var(--cd);border:1px solid var(--ln);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}
+.m{color:var(--mu);font-size:.9rem}.bad{color:var(--bd)}
+.t{font:700 2.6rem Georgia,serif;line-height:1}
+.r{display:flex;justify-content:space-between;gap:.5rem;align-items:center}
+.g{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
+button,input,textarea{font:inherit;color:var(--ink)}
+button{border:1px solid var(--ln);background:var(--cd);padding:.4rem .7rem;border-radius:8px;cursor:pointer}
+button.pri{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+input,textarea{background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:.4rem;max-width:100%}
+label{display:block;margin:.5rem 0}label input{display:block;margin-top:.2rem}label.k{display:inline-flex;gap:.3rem;margin:0}label.k input{display:inline;margin:0}
+label.big{display:flex;gap:.7rem;align-items:center;font-size:1.15rem;font-weight:600;padding:.9rem;border:2px solid var(--ac);border-radius:10px;margin:.7rem 0}
+input[type=checkbox]{width:1.5rem;height:1.5rem;accent-color:var(--ac)}
+.bar{height:8px;background:var(--ln);border-radius:4px;overflow:hidden;margin:.3rem 0}.bar i{display:block;height:100%;background:var(--ac)}
+table{width:100%;border-collapse:collapse;margin:.3rem 0}td,th{padding:.25rem;border-bottom:1px solid var(--ln);text-align:left}
+ul{padding-left:1.1rem}textarea{width:100%;box-sizing:border-box}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+body{background:var(--bgg,var(--bg)) fixed}
+#bg{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.c{backdrop-filter:blur(5px)}
+.eq{font:italic 1.15rem Cambria,"Cambria Math",Georgia,serif;color:var(--gd);margin:.2rem 0}
+.q{border-left:3px solid var(--gd)}
+header small{display:block;font:400 .8rem system-ui,sans-serif;color:var(--mu)}
+.bar i{background:linear-gradient(90deg,#7b5cff,#5de0ec,#ffb347)}
+input[type=range]{width:100%;padding:0;accent-color:var(--ac)}
+.sp{animation:sp 9s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.sp{animation:none}}
+.ls{margin:.4rem 0;padding:.4rem .6rem;border-left:2px solid var(--ac);background:rgba(93,224,236,.06);border-radius:0 6px 6px 0}li{margin:.5rem 0}summary{cursor:pointer}
+a{color:var(--ac)}
+</style></head><body>
+<div id=bg></div><header><span id=ttl></span><small id=sub></small></header>
+<nav><button data-t=today>Today</button><button data-t=plan>Plan</button><button data-t=road>Syllabus</button><button data-t=jour>Phases</button><button data-t=settings>Settings</button></nav>
+<main id=v></main>
+<script>
+const CFG=/*__CONFIG__*/{};
+const T=CFG.tasks.map(t=>[t.title,t.kind||'',t.hours,t.hint||'']),CP=(CFG.phases||[]).map(c=>[c.name,c.hours,c.note||'']),LS=CFG.lessons||{};
+const SIG=T.map(x=>x[0]).join('|');
+const K=(CFG.id||'syllabus')+'.v1',D=()=>({sig:SIG,start:CFG.start,deadline:CFG.deadline,hpd:CFG.hoursPerDay||6,max:CFG.maxHoursPerDay||8,buf:CFG.bufferDays??10,off:CFG.offWeekdays||[0,6],custom:[...(CFG.daysOff||[])],bk:'',tasks:T.map(x=>({t:x[0],k:x[1],h:x[2],u:x[3],d:0})),days:{}});
+function load(){try{const s=JSON.parse(localStorage.getItem(K));if(s&&s.tasks){const m={};s.tasks.forEach(t=>m[t.t]=t);s.tasks=T.map(x=>({t:x[0],k:x[1],h:x[2],u:x[3],d:Math.min(x[2],(m[x[0]]||{}).d||0)}));if(s.sig!==SIG){s.sig=SIG;Object.keys(s.days).forEach(k=>{const r=s.days[k];if(r.st==='pending')delete s.days[k];else r.ap=[]})}return s}}catch(x){}return D()}
+let st=load(),tab='today',draft=null;
+function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(x){}}
+const $=i=>document.getElementById(i),p2=n=>String(n).padStart(2,'0'),f=n=>String(Math.round(n*100)/100),f1=P=>isFinite(P)?f(P):'n/a';
+const fmt=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
+const pdt=s=>{const a=s.split('-');return new Date(+a[0],a[1]-1,+a[2])};
+const add=(s,n)=>{const d=pdt(s);d.setDate(d.getDate()+n);return fmt(d)};
+const td=()=>fmt(new Date());
+const e=s=>String(s).replace(/[&<>"]/g,c=>'&#'+c.charCodeAt(0)+';');
+const isW=(S,d)=>!S.off.includes(pdt(d).getDay())&&!S.custom.includes(d);
+const nxw=(S,d)=>{d=add(d,1);for(let k=0;k<400&&!isW(S,d);k++)d=add(d,1);return d};
+function wd(S,a,b){const r=[];for(let d=a,k=0;d<=b&&k<3000;d=add(d,1),k++)if(isW(S,d))r.push(d);return r}
+function adv(S,a,n){let c=0,d=a;for(let k=0;k<4000;k++,d=add(d,1))if(isW(S,d)&&++c>=n)return d;return d}
+function plan(S,from){
+ const all=wd(S,from,S.deadline),pl=all.slice(0,Math.max(0,all.length-S.buf)),q=[];
+ S.tasks.forEach((t,i)=>{if(t.h-t.d>.001)q.push({i,r:t.h-t.d})});
+ const R=q.reduce((a,x)=>a+x.r,0),n=pl.length,P=R<=0?0:n?R/n:Infinity,days=[];
+ if(P<=S.max&&R>0){let acc=0,qi=0;pl.forEach((ds,k)=>{const g=k==n-1?R:Math.round(P*(k+1)*4)/4;let b=g-acc,tg=0;acc=g;const sl=[];
+  while(b>.001&&qi<q.length){const x=q[qi],h=Math.min(b,x.r);sl.push({i:x.i,h});tg+=h;x.r-=h;b-=h;if(x.r<.001)qi++}
+  days.push({ds,tg,sl})})}
+ return{days,R,n,P,ok:P<=S.max}}
+function pf(S){const t=td(),r=S.days[t],c=r&&r.st==='done'?add(t,1):t;return c<S.start?S.start:c}
+const pl=S=>plan(S,pf(S));
+function rec(S,t){if(t<S.start||t>S.deadline||!isW(S,t))return null;let r=S.days[t];
+ if(!r){const p=plan(S,t),d0=p.days[0]&&p.days[0].ds===t?p.days[0]:null;r=S.days[t]={tg:d0?d0.tg:0,sl:d0?d0.sl:[],st:'pending',ap:[],lg:0};save()}return r}
+function tick(){const S=st,r=rec(S,td());if(!r)return;
+ r.ap.forEach(a=>S.tasks[a.i].d=Math.max(0,S.tasks[a.i].d-a.h));r.ap=[];r.lg=0;
+ if(r.st==='done')r.st='pending';
+ else{r.sl.forEach(x=>{const t=S.tasks[x.i],g=Math.min(x.h,t.h-t.d);if(g>0){t.d+=g;r.ap.push({i:x.i,h:g})}});r.lg=r.ap.reduce((a,x)=>a+x.h,0);r.st='done'}
+ save();render()}
+function logH(){const h=parseFloat($('lh').value);if(!(h>0))return;const S=st,r=rec(S,td());if(!r)return;let left=h;
+ for(let i=0;i<S.tasks.length&&left>.001;i++){const t=S.tasks[i],g=Math.min(left,t.h-t.d);if(g>0){t.d+=g;left-=g;r.ap.push({i,h:g});r.lg+=g}}
+ if(r.st!=='done')r.st='partial';save();render()}
+function rep(){const r=st.days[td()];if(r&&r.st!=='done')delete st.days[td()];save();render()}
+function mk(d,off){if(off){st.custom.push(d);st.custom.sort()}st.days[d]={st:off?'excused':'missed',tg:0,sl:[],ap:[],lg:0};save();render()}
+function kn(i){const t=st.tasks[i];t.d=t.d>=t.h?0:t.h;save();render()}
+function xd(){const S=st,p=pl(S);return adv(S,pf(S),Math.ceil(p.R/S.hpd)+S.buf)}
+function ext(){st.deadline=xd();save();render()}
+function streak(S){let n=0,d=td();const r=S.days[d];if(!(r&&r.st==='done'))d=add(d,-1);
+ for(let k=0;k<500&&d>=S.start;k++,d=add(d,-1)){if(!isW(S,d))continue;const x=S.days[d];if(x&&x.st==='done')n++;else break}return n}
+const fin=p=>!p.ok?'n/a':p.days.length?p.days[p.days.length-1].ds:'complete';
+function chip(p){const S=st;
+ if(!p.ok)return`<div class="c bad"><b>Needs ${f1(p.P)} h/day, above your ${S.max} h limit.</b><div class=g><button onclick=ext()>Extend deadline to ${xd()}</button></div><div class=m>Or raise the limit in Settings, or mark topics you already know in Syllabus.</div></div>`;
+ const d=p.P-S.hpd;return`<div class=c><b>${d>.25?'Behind':d<-.25?'Ahead':'On track'}</b> · needs ${f(p.P)} h/day vs your ${S.hpd} h plan · ${p.n} planning days left · ${f(p.R)} h to go</div>`}
+function late(S,t){const L=[];for(let d=S.start;d<t&&L.length<7;d=add(d,1)){const r=S.days[d];if(isW(S,d)&&(!r||r.st==='pending'))L.push(d)}
+ return L.length?`<div class="c bad"><b>${L.length>6?'6+':L.length} past work days have no check-in.</b><div class=m>Missed hours are already folded into your plan. Mark them to keep streaks accurate.</div>${L.map(d=>`<div class=r><span>${d}</span><span><button onclick="mk('${d}',0)">Missed</button> <button onclick="mk('${d}',1)">Day off</button></span></div>`).join('')}</div>`:''}
+const wk=d=>{const x=pdt(d);x.setDate(x.getDate()-(x.getDay()+6)%7);return fmt(x)};
+function grp(days,fn){const m={};days.forEach(d=>{const k=fn(d.ds);m[k]=(m[k]||0)+d.tg});return Object.entries(m)}
+const tbl=(h,rows)=>`<div class=c><b>${h}</b><table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${f(r[1])} h</td></tr>`).join('')}</table></div>`;
+const sum=k=>st.tasks.reduce((a,x)=>a+x[k],0);
+function prev(){const S=st,d=draft,N=Object.assign({},S,d),a=pl(S),b=pl(N),w=7-d.off.length,w0=7-S.off.length;
+ const row=(n,x,y)=>`<tr><td>${n}</td><td>${x}</td><td>${y}</td></tr>`;
+ let h=`<b>Preview (now → new)</b><table><tr><th></th><th>Now</th><th>New</th></tr>`+row('Planning days',a.n,b.n)+row('Daily target (h)',f1(a.P),f1(b.P))+row('Weekly average (h)',f1(a.P*w0),f1(b.P*w))+row('Monthly average (h)',f1(a.P*w0*52/12),f1(b.P*w*52/12))+'</table>';
+ h+=!b.ok?`<p class=bad>Infeasible: needs ${f1(b.P)} h/day, above your maximum. Nothing changes until you apply.</p>`:b.P>d.hpd+.01?`<p class=bad>Needs more than your ${d.hpd} h per day.</p>`:'<p class=m>Fits your daily hours.</p>';
+ return h+'<b>What if the deadline moved?</b><table>'+[-28,-14,14,28,56].map(n=>row((n>0?'+':'')+n/7+' weeks',add(d.deadline,n),f1(pl(Object.assign({},N,{deadline:add(d.deadline,n)})).P)+' h/day')).join('')+'</table>'}
+function upd(){const d=draft;d.deadline=$('dl').value||d.deadline;$('sl').value=dd(d.deadline,st.deadline);lab();d.hpd=+$('hp').value||d.hpd;d.max=Math.max(d.hpd,+$('mx').value||d.max);d.buf=Math.max(0,+$('bf').value||0);
+ const o=[...document.querySelectorAll('[data-d]')].filter(x=>x.checked).map(x=>+x.dataset.d);if(o.length<6)d.off=o;$('pv').innerHTML=prev()}
+function sh(n){draft.deadline=add(draft.deadline,n);sync()}
+function addOff(){upd();const v=$('co').value;if(v&&!draft.custom.includes(v)){draft.custom.push(v);draft.custom.sort()}render()}
+function rmOff(x){upd();draft.custom=draft.custom.filter(y=>y!==x);render()}
+function apply(){upd();Object.assign(st,draft);const r=st.days[td()];if(r&&r.st==='pending')delete st.days[td()];draft=null;save();tab='today';render()}
+function exp(){st.bk=td();save();$('bx').value=JSON.stringify(st);$('bx').select()}
+function imp(){try{const o=JSON.parse($('bx').value);if(!(o&&o.tasks&&o.deadline))throw 0;st=o;save();draft=null;render()}catch(x){$('bx').value='That text is not a valid backup.'}}
+const views={
+today(){const S=st,t=td(),r=rec(S,t),p=pl(S),done=r&&r.st==='done';
+ let h=`<h2>${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</h2>`+cnt()+star()+chip(p)+late(S,t)+(S.bk&&add(S.bk,7)>=t?'':'<div class="c m">Back up your data: Settings → Show backup.</div>');
+ if(t<S.start)h+=`<div class=c>Your plan starts on ${S.start}. First target: ${p.days[0]?f(p.days[0].tg):0} h.</div>`;
+ else if(!r)h+=`<div class=c><b>Rest day.</b> Next work day ${nxw(S,t)}${p.days[0]?', target '+f(p.days[0].tg)+' h':''}.</div>`;
+ else h+=`<div class=c><div class=t>${f(r.tg)} h</div><div class=m>today's target</div><ul>${r.sl.map(x=>sli(S,r,x)).join('')||'<li>No target today (buffer days or all content done).</li>'}</ul>
+ <label class=big><input type=checkbox ${done?'checked':''} onchange=tick()> I hit today's target</label>
+ <div class=g><input id=lh type=number step=.25 min=0 placeholder="Hours done" style="width:7em"><button onclick=logH()>Log hours</button><button onclick=rep()>Re-plan today</button></div>
+ <div class=m>Logged today: ${f(r.lg||0)} h${r.st==='partial'?' (partial)':''}</div></div>`;
+ return h+`<div class="c m">${f(sum('d'))} of ${f(sum('h'))} h done · streak ${streak(S)} work days · projected finish ${fin(p)}</div>`},
+plan(){const S=st,p=pl(S);ann(S,p.days);
+ return'<h2>Plan</h2>'+(p.ok?'':'<div class="c bad">Infeasible at current settings. See Today for options.</div>')+'<div class=c><b>Next work days</b>'+p.days.slice(0,10).map(d=>`<div class=r><span>${d.ds}</span><span>${f(d.tg)} h</span></div><div class=m>${d.sl.map(x=>{const L=les(S,x.i,x.o,x.h);return e(S.tasks[x.i].t)+(L?': '+L.map(z=>e(z.l[0])).join('; '):'')}).join(' | ')}</div>`).join('')+'</div>'+tbl('Weekly targets (week starting)',grp(p.days,wk).slice(0,8))+tbl('Monthly targets',grp(p.days,d=>d.slice(0,7)))},
+road(){const S=st;return`<h2>Syllabus</h2>${src()}<div class=c>${Math.round(sum('d')/sum('h')*100)}% complete · ${f(sum('d'))} of ${f(sum('h'))} h</div>`+S.tasks.map((t,i)=>`<div class=c><div class=r><b>${e(t.t)}</b><span class=m>${t.k}</span></div><div class=m>${rs(t.u)}</div>${syl(t)}<div class=bar><i style="width:${Math.min(100,t.d/t.h*100)}%"></i></div><div class=r><span class=m>${f(t.d)} / ${f(t.h)} h</span><button onclick="kn(${i})">${t.d>=t.h?'Reset':'I already know this'}</button></div></div>`).join('')},
+jour(){const S=st,p=pl(S),end=p.ok?(p.days.length?p.days[p.days.length-1].ds:td()):S.deadline;
+ let h=`<h2>Phases</h2><div class=c><b>1. ${e(CFG.title)}</b><div class=m>${S.start} → deadline ${S.deadline} (fixed)</div><div class=bar><i style="width:${sum('d')/sum('h')*100}%"></i></div><div class=m>Projected finish ${p.ok?end:'not feasible'} · ${f(sum('h')-sum('d'))} h left</div></div>`,s=nxw(S,p.ok?end:S.deadline);
+ CP.forEach((c,i)=>{const en=adv(S,s,Math.ceil(c[1]/S.hpd));h+=`<div class=c><b>${i+2}. ${e(c[0])}</b><div class=m>Projected ${s} → ${en} · about ${c[1]} h at ${S.hpd} h/day · provisional</div>${c[2]?`<div class=m>${e(c[2])}</div>`:''}</div>`;s=nxw(S,en)});
+ return h+`<p class=m>Later phases are projected at your planned pace and shift automatically when an earlier one moves.</p>`},
+settings(){const S=st,d=draft||(draft={deadline:S.deadline,hpd:S.hpd,max:S.max,buf:S.buf,off:[...S.off],custom:[...S.custom]}),N=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+ return`<h2>Settings</h2><div class=c><label>Deadline<input id=dl type=date value="${d.deadline}" oninput=upd()></label>
+ <label>Timeline slider: <b id=sd></b><input id=sl type=range min=-84 max=168 step=1 value="${dd(d.deadline,S.deadline)}" oninput=sv()></label><div class=g><button onclick="sh(-28)">−4 weeks</button><button onclick="sh(-14)">−2</button><button onclick="sh(14)">+2</button><button onclick="sh(28)">+4 weeks</button></div>
+ <label>Hours per day<input id=hp type=number step=.5 min=1 value="${d.hpd}" oninput=upd()></label>
+ <label>Maximum hours per day<input id=mx type=number step=.5 min=1 value="${d.max}" oninput=upd()></label>
+ <label>Buffer (work days kept free at the end)<input id=bf type=number min=0 value="${d.buf}" oninput=upd()></label>
+ <div>Days off each week</div><div class=g>${N.map((n,i)=>`<label class=k><input type=checkbox data-d=${i} ${d.off.includes(i)?'checked':''} onchange=upd()>${n}</label>`).join('')}</div>
+ <label>Extra day off<input id=co type=date></label><button onclick=addOff()>Add day off</button>
+ <div class=g>${d.custom.map(x=>`<button onclick="rmOff('${x}')">${x} ✕</button>`).join('')}</div></div>
+ <div class=c id=pv>${prev()}</div><div class=g><button class=pri onclick=apply()>Apply changes</button><button onclick="draft=null;render()">Reset</button></div>
+ <div class=c><b>Backup</b><p class=m>Copy this text somewhere safe. Paste a saved copy here to restore.</p><textarea id=bx rows=4></textarea><div class=g><button onclick=exp()>Show backup</button><button onclick=imp()>Restore from text</button></div></div>`}};
+function les(S,i,o,h){const L=LS[S.tasks[i].t];if(!L)return null;let c=0;const r=[];L.forEach(l=>{const a=c;c+=l[1];if(a<o+h-.01&&c>o+.01)r.push({l,c:a<o-.01?'continued from earlier':c>o+h+.01?'continues tomorrow':''})});return r}
+const lh=z=>`<div class=ls><b>${e(z.l[0])}</b> <span class=m>${f(z.l[1])} h${z.c?' · '+z.c:''}</span><div>${e(z.l[2])}</div><div class=m>📚 ${rs(z.l[3])}</div></div>`;
+function sli(S,r,x){const t=S.tasks[x.i],o=Math.max(0,t.d-(r.ap||[]).filter(a=>a.i===x.i).reduce((a,b)=>a+b.h,0)),L=les(S,x.i,o,x.h);
+ return`<li><b>${e(t.t)}</b> <span class=m>${f(x.h)} h</span>`+(L?L.map(lh).join(''):`<div class=m>📚 ${rs(t.u)} · No lesson breakdown for this topic yet.</div>`)+'</li>'}
+function ann(S,days){const a={};days.forEach(d=>d.sl.forEach(x=>{x.o=a[x.i]??S.tasks[x.i].d;a[x.i]=x.o+x.h}));return days}
+const syl=t=>LS[t.t]?`<details><summary class=m>Lessons (${LS[t.t].length} lessons)</summary>${LS[t.t].map((z,k)=>lh({l:z,c:''}).replace('<b>','<b>'+(k+1)+'. ')).join('')}</details>`:'';
+const dd=(a,b)=>Math.round((pdt(a)-pdt(b))/864e5);
+function lab(){const n=dd(draft.deadline,st.deadline);$('sd').textContent=draft.deadline+' ('+(n>0?'+':'')+Math.round(n/7*10)/10+' weeks)'}
+function sync(){$('dl').value=draft.deadline;$('sl').value=dd(draft.deadline,st.deadline);lab();$('pv').innerHTML=prev()}
+function sv(){draft.deadline=add(st.deadline,+$('sl').value);sync()}
+const E=CFG.motivation||[];
+function star(){if(!E.length)return'';const q=E[Math.floor(Date.now()/864e5)%E.length];return`<div class="c q"><div class=eq>${e(q[0])}</div><div class=m>${e(q[1]||'')}${q[2]?' · '+e(q[2]):''}</div></div>`}
+function bg(){$('bg').innerHTML=CFG.bgSvg||''}
+const rs=s=>e(s).replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,(m,a,u)=>`<a href="${u}" target="_blank" rel="noopener">${a}</a>`);
+function cnt(){if(!CFG.examDate)return'';const n=dd(CFG.examDate,td());return n<0?'':`<div class=c><b>${n}</b> days to ${e(CFG.examName||'the exam')} · ${e(CFG.examDate)}</div>`}
+function src(){const a=CFG.sources||[],n=CFG.notes||[];if(!a.length&&!n.length)return'';return`<div class=c><b>Sources and assumptions</b>${CFG.verifiedOn?`<div class=m>Checked on ${e(CFG.verifiedOn)}. Confirm dates on the official site before relying on them.</div>`:''}${n.map(x=>`<div class=m>• ${e(x)}</div>`).join('')}${a.map(x=>`<div class=m>🔗 ${rs('['+x[0]+']('+x[1]+')')}${x[2]?' · '+e(x[2]):''}</div>`).join('')}</div>`}
+function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));$('v').innerHTML=views[tab]();if(tab==='settings')lab()}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;if(tab!=='settings')draft=null;render()});
+const TH={
+midnight:{'--bg':'#0f1724','--cd':'rgba(22,32,50,.86)','--ink':'#e6edf7','--mu':'#9aa9bd','--ac':'#5ab0ff','--gd':'#ffc857','--bd':'#ff8a6b','--ln':'rgba(140,160,200,.28)','--bgg':'linear-gradient(180deg,#131c2e,#0b111c)'},
+paper:{'--bg':'#f5f3ee','--cd':'#ffffff','--ink':'#1f2933','--mu':'#667085','--ac':'#2b6cb0','--gd':'#b7791f','--bd':'#c0392b','--ln':'#dcd7cc','--bgg':'#f5f3ee'},
+forest:{'--bg':'#0e1a14','--cd':'rgba(18,34,26,.86)','--ink':'#e4f1e8','--mu':'#93ac9c','--ac':'#5fd39a','--gd':'#f2c14e','--bd':'#ff9b7a','--ln':'rgba(120,180,150,.28)','--bgg':'linear-gradient(180deg,#12251b,#0a130e)'},
+cosmic:{'--bg':'#060814','--cd':'rgba(12,17,46,.74)','--ink':'#e8eefc','--mu':'#9aa6c9','--ac':'#5de0ec','--gd':'#ffb347','--bd':'#ff8a6b','--ln':'rgba(125,145,230,.28)','--bgg':'linear-gradient(180deg,#0b0f33,#060814 55%,#0a0720)'}};
+Object.entries(Object.assign({},TH[CFG.theme]||TH.midnight,CFG.colors||{})).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
+document.title=CFG.title;$('ttl').textContent=CFG.title;$('sub').textContent=CFG.subtitle||'';
+if(!CP.length)document.querySelector('[data-t=jour]').remove();
+bg();render();
+</script></body></html>

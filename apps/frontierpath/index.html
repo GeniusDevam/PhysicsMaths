@@ -1,0 +1,207 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>FrontierPath</title>
+<style>
+:root{--bg:#060814;--cd:rgba(12,17,46,.74);--ink:#e8eefc;--mu:#9aa6c9;--ac:#5de0ec;--gd:#ffb347;--bd:#ff8a6b;--ln:rgba(125,145,230,.28);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:.8rem 1rem 0;font:700 1.3rem Georgia,serif}
+nav{display:flex;gap:.3rem;overflow-x:auto;padding:.5rem 1rem}
+nav button{flex:none;border:1px solid var(--ln);background:var(--cd);color:var(--ink);padding:.45rem .8rem;border-radius:99px}
+nav button.on{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+main{max-width:640px;margin:0 auto;padding:0 1rem 3rem}
+h2{font:700 1.25rem Georgia,serif;margin:.6rem 0}
+.c{background:var(--cd);border:1px solid var(--ln);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}
+.m{color:var(--mu);font-size:.9rem}.bad{color:var(--bd)}
+.t{font:700 2.6rem Georgia,serif;line-height:1}
+.r{display:flex;justify-content:space-between;gap:.5rem;align-items:center}
+.g{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
+button,input,textarea{font:inherit;color:var(--ink)}
+button{border:1px solid var(--ln);background:var(--cd);padding:.4rem .7rem;border-radius:8px;cursor:pointer}
+button.pri{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+input,textarea{background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:.4rem;max-width:100%}
+label{display:block;margin:.5rem 0}label input{display:block;margin-top:.2rem}label.k{display:inline-flex;gap:.3rem;margin:0}label.k input{display:inline;margin:0}
+label.big{display:flex;gap:.7rem;align-items:center;font-size:1.15rem;font-weight:600;padding:.9rem;border:2px solid var(--ac);border-radius:10px;margin:.7rem 0}
+input[type=checkbox]{width:1.5rem;height:1.5rem;accent-color:var(--ac)}
+.bar{height:8px;background:var(--ln);border-radius:4px;overflow:hidden;margin:.3rem 0}.bar i{display:block;height:100%;background:var(--ac)}
+table{width:100%;border-collapse:collapse;margin:.3rem 0}td,th{padding:.25rem;border-bottom:1px solid var(--ln);text-align:left}
+ul{padding-left:1.1rem}textarea{width:100%;box-sizing:border-box}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+body{background:linear-gradient(180deg,#0b0f33,#060814 55%,#0a0720) fixed,var(--bg)}
+#bg{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.c{backdrop-filter:blur(5px)}
+.eq{font:italic 1.15rem Cambria,"Cambria Math",Georgia,serif;color:var(--gd);margin:.2rem 0}
+.q{border-left:3px solid var(--gd)}
+header small{display:block;font:400 .8rem system-ui,sans-serif;color:var(--mu)}
+.bar i{background:linear-gradient(90deg,#7b5cff,#5de0ec,#ffb347)}
+input[type=range]{width:100%;padding:0;accent-color:var(--ac)}
+.sp{animation:sp 9s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.sp{animation:none}}
+.ls{margin:.4rem 0;padding:.4rem .6rem;border-left:2px solid var(--ac);background:rgba(93,224,236,.06);border-radius:0 6px 6px 0}li{margin:.5rem 0}summary{cursor:pointer}
+</style></head><body>
+<div id=bg></div><header>FrontierPath<small>From the quantum to the cosmos: understand it, then add to it.</small></header>
+<nav><button data-t=today>Today</button><button data-t=plan>Plan</button><button data-t=road>Roadmap</button><button data-t=jour>Journey</button><button data-t=settings>Settings</button></nav>
+<main id=v></main>
+<script>
+const T=[['Diagnostic and setup','tools',5,'Khan Academy tests, Anki, Python'],['Calculus completion + vectors','maths',50,'3Blue1Brown, MIT 18.01SC'],['Newtonian mechanics refresh','physics',30,'MIT 8.01, OpenStax Vol 1'],['Multivariable calculus','maths',50,'MIT 18.02SC'],['Gate 1','gate',6,'Timed self-test, 70% to pass'],['Linear algebra','maths',60,'3Blue1Brown, MIT 18.06'],['Oscillations and waves','physics',15,'MIT 8.03 selected'],['Complex numbers','maths',20,'Khan Academy, MIT 18.04'],['Gate 2','gate',6,'Timed self-test'],['Ordinary differential equations','maths',30,'MIT 18.03SC'],['Electromagnetism','physics',60,'MIT 8.02, Feynman Vol II'],['Gate 3','gate',6,'Timed self-test'],['Fourier analysis and PDEs','maths',35,'Brunton, 18.03SC'],['Probability and special functions','maths',20,'MIT 18.05 selected'],['Thermal and statistical physics','physics',30,'Susskind, Tong'],['Lagrangian and Hamiltonian mechanics','physics',45,'Susskind, Tong'],['Gate 4','gate',6,'Timed self-test'],['Special relativity','physics',35,'Susskind, Feynman Vol I'],['Old quantum theory','physics',20,'MIT 8.04 first lectures'],['Gate 5','gate',6,'Timed self-test'],['Quantum mechanics','physics',125,'Susskind, MIT 8.04/8.05, Tong'],['Gate 6','gate',6,'Timed self-test'],['Tensor calculus','maths',40,'eigenchris, Carroll notes'],['General relativity and cosmology','physics',90,'Susskind, Carroll, MIT 8.286'],['History and primary sources','history',10,'Einstein on Project Gutenberg'],['Gate 7','gate',6,'Timed self-test'],['Capstone project','capstone',25,'Simulation or write-up']];
+const CP=[['Rigorous maths and graduate physics',1000,'[x̂, p̂] = iħ'],['Quantum field theory, Standard Model, advanced GR',1150,'(iγ^μ∂_μ − m)ψ = 0     ℒ = −¼ F^a_μν F^aμν'],['Frontier entry: strings, CFT, Millennium-problem maths',1900,'S = −T ∫ dA     ζ(s) = Π (1 − p^−s)^−1']];
+const K='frontierpath.v1',D=()=>({start:'2026-10-05',deadline:'2027-04-30',hpd:6,max:8,buf:10,off:[0,6],custom:[],bk:'',tasks:T.map(x=>({t:x[0],k:x[1],h:x[2],u:x[3],d:0})),days:{}});
+function load(){try{const s=JSON.parse(localStorage.getItem(K));if(s&&s.tasks)return s}catch(x){}return D()}
+let st=load(),tab='today',draft=null;
+function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(x){}}
+const $=i=>document.getElementById(i),p2=n=>String(n).padStart(2,'0'),f=n=>String(Math.round(n*100)/100),f1=P=>isFinite(P)?f(P):'n/a';
+const fmt=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
+const pdt=s=>{const a=s.split('-');return new Date(+a[0],a[1]-1,+a[2])};
+const add=(s,n)=>{const d=pdt(s);d.setDate(d.getDate()+n);return fmt(d)};
+const td=()=>fmt(new Date());
+const e=s=>String(s).replace(/[&<>"]/g,c=>'&#'+c.charCodeAt(0)+';');
+const isW=(S,d)=>!S.off.includes(pdt(d).getDay())&&!S.custom.includes(d);
+const nxw=(S,d)=>{d=add(d,1);for(let k=0;k<400&&!isW(S,d);k++)d=add(d,1);return d};
+function wd(S,a,b){const r=[];for(let d=a,k=0;d<=b&&k<3000;d=add(d,1),k++)if(isW(S,d))r.push(d);return r}
+function adv(S,a,n){let c=0,d=a;for(let k=0;k<4000;k++,d=add(d,1))if(isW(S,d)&&++c>=n)return d;return d}
+function plan(S,from){
+ const all=wd(S,from,S.deadline),pl=all.slice(0,Math.max(0,all.length-S.buf)),q=[];
+ S.tasks.forEach((t,i)=>{if(t.h-t.d>.001)q.push({i,r:t.h-t.d})});
+ const R=q.reduce((a,x)=>a+x.r,0),n=pl.length,P=R<=0?0:n?R/n:Infinity,days=[];
+ if(P<=S.max&&R>0){let acc=0,qi=0;pl.forEach((ds,k)=>{const g=k==n-1?R:Math.round(P*(k+1)*4)/4;let b=g-acc,tg=0;acc=g;const sl=[];
+  while(b>.001&&qi<q.length){const x=q[qi],h=Math.min(b,x.r);sl.push({i:x.i,h});tg+=h;x.r-=h;b-=h;if(x.r<.001)qi++}
+  days.push({ds,tg,sl})})}
+ return{days,R,n,P,ok:P<=S.max}}
+function pf(S){const t=td(),r=S.days[t],c=r&&r.st==='done'?add(t,1):t;return c<S.start?S.start:c}
+const pl=S=>plan(S,pf(S));
+function rec(S,t){if(t<S.start||t>S.deadline||!isW(S,t))return null;let r=S.days[t];
+ if(!r){const p=plan(S,t),d0=p.days[0]&&p.days[0].ds===t?p.days[0]:null;r=S.days[t]={tg:d0?d0.tg:0,sl:d0?d0.sl:[],st:'pending',ap:[],lg:0};save()}return r}
+function tick(){const S=st,r=rec(S,td());if(!r)return;
+ r.ap.forEach(a=>S.tasks[a.i].d=Math.max(0,S.tasks[a.i].d-a.h));r.ap=[];r.lg=0;
+ if(r.st==='done')r.st='pending';
+ else{r.sl.forEach(x=>{const t=S.tasks[x.i],g=Math.min(x.h,t.h-t.d);if(g>0){t.d+=g;r.ap.push({i:x.i,h:g})}});r.lg=r.ap.reduce((a,x)=>a+x.h,0);r.st='done'}
+ save();render()}
+function logH(){const h=parseFloat($('lh').value);if(!(h>0))return;const S=st,r=rec(S,td());if(!r)return;let left=h;
+ for(let i=0;i<S.tasks.length&&left>.001;i++){const t=S.tasks[i],g=Math.min(left,t.h-t.d);if(g>0){t.d+=g;left-=g;r.ap.push({i,h:g});r.lg+=g}}
+ if(r.st!=='done')r.st='partial';save();render()}
+function rep(){const r=st.days[td()];if(r&&r.st!=='done')delete st.days[td()];save();render()}
+function mk(d,off){if(off){st.custom.push(d);st.custom.sort()}st.days[d]={st:off?'excused':'missed',tg:0,sl:[],ap:[],lg:0};save();render()}
+function kn(i){const t=st.tasks[i];t.d=t.d>=t.h?0:t.h;save();render()}
+function xd(){const S=st,p=pl(S);return adv(S,pf(S),Math.ceil(p.R/S.hpd)+S.buf)}
+function ext(){st.deadline=xd();save();render()}
+function streak(S){let n=0,d=td();const r=S.days[d];if(!(r&&r.st==='done'))d=add(d,-1);
+ for(let k=0;k<500&&d>=S.start;k++,d=add(d,-1)){if(!isW(S,d))continue;const x=S.days[d];if(x&&x.st==='done')n++;else break}return n}
+const fin=p=>!p.ok?'n/a':p.days.length?p.days[p.days.length-1].ds:'complete';
+function chip(p){const S=st;
+ if(!p.ok)return`<div class="c bad"><b>Needs ${f1(p.P)} h/day, above your ${S.max} h limit.</b><div class=g><button onclick=ext()>Extend deadline to ${xd()}</button></div><div class=m>Or raise the limit in Settings, or mark modules you already know in Roadmap.</div></div>`;
+ const d=p.P-S.hpd;return`<div class=c><b>${d>.25?'Behind':d<-.25?'Ahead':'On track'}</b> · needs ${f(p.P)} h/day vs your ${S.hpd} h plan · ${p.n} planning days left · ${f(p.R)} h to go</div>`}
+function late(S,t){const L=[];for(let d=S.start;d<t&&L.length<7;d=add(d,1)){const r=S.days[d];if(isW(S,d)&&(!r||r.st==='pending'))L.push(d)}
+ return L.length?`<div class="c bad"><b>${L.length>6?'6+':L.length} past work days have no check-in.</b><div class=m>Missed hours are already folded into your plan. Mark them to keep streaks accurate.</div>${L.map(d=>`<div class=r><span>${d}</span><span><button onclick="mk('${d}',0)">Missed</button> <button onclick="mk('${d}',1)">Day off</button></span></div>`).join('')}</div>`:''}
+const wk=d=>{const x=pdt(d);x.setDate(x.getDate()-(x.getDay()+6)%7);return fmt(x)};
+function grp(days,fn){const m={};days.forEach(d=>{const k=fn(d.ds);m[k]=(m[k]||0)+d.tg});return Object.entries(m)}
+const tbl=(h,rows)=>`<div class=c><b>${h}</b><table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${f(r[1])} h</td></tr>`).join('')}</table></div>`;
+const sum=k=>st.tasks.reduce((a,x)=>a+x[k],0);
+function prev(){const S=st,d=draft,N=Object.assign({},S,d),a=pl(S),b=pl(N),w=7-d.off.length,w0=7-S.off.length;
+ const row=(n,x,y)=>`<tr><td>${n}</td><td>${x}</td><td>${y}</td></tr>`;
+ let h=`<b>Preview (now → new)</b><table><tr><th></th><th>Now</th><th>New</th></tr>`+row('Planning days',a.n,b.n)+row('Daily target (h)',f1(a.P),f1(b.P))+row('Weekly average (h)',f1(a.P*w0),f1(b.P*w))+row('Monthly average (h)',f1(a.P*w0*52/12),f1(b.P*w*52/12))+'</table>';
+ h+=!b.ok?`<p class=bad>Infeasible: needs ${f1(b.P)} h/day, above your maximum. Nothing changes until you apply.</p>`:b.P>d.hpd+.01?`<p class=bad>Needs more than your ${d.hpd} h per day.</p>`:'<p class=m>Fits your daily hours.</p>';
+ return h+'<b>What if the deadline moved?</b><table>'+[-28,-14,14,28,56].map(n=>row((n>0?'+':'')+n/7+' weeks',add(d.deadline,n),f1(pl(Object.assign({},N,{deadline:add(d.deadline,n)})).P)+' h/day')).join('')+'</table>'}
+function upd(){const d=draft;d.deadline=$('dl').value||d.deadline;$('sl').value=dd(d.deadline,st.deadline);lab();d.hpd=+$('hp').value||d.hpd;d.max=Math.max(d.hpd,+$('mx').value||d.max);d.buf=Math.max(0,+$('bf').value||0);
+ const o=[...document.querySelectorAll('[data-d]')].filter(x=>x.checked).map(x=>+x.dataset.d);if(o.length<6)d.off=o;$('pv').innerHTML=prev()}
+function sh(n){draft.deadline=add(draft.deadline,n);sync()}
+function addOff(){upd();const v=$('co').value;if(v&&!draft.custom.includes(v)){draft.custom.push(v);draft.custom.sort()}render()}
+function rmOff(x){upd();draft.custom=draft.custom.filter(y=>y!==x);render()}
+function apply(){upd();Object.assign(st,draft);const r=st.days[td()];if(r&&r.st==='pending')delete st.days[td()];draft=null;save();tab='today';render()}
+function exp(){st.bk=td();save();$('bx').value=JSON.stringify(st);$('bx').select()}
+function imp(){try{const o=JSON.parse($('bx').value);if(!(o&&o.tasks&&o.deadline))throw 0;st=o;save();draft=null;render()}catch(x){$('bx').value='That text is not a valid backup.'}}
+const views={
+today(){const S=st,t=td(),r=rec(S,t),p=pl(S),done=r&&r.st==='done';
+ let h=`<h2>${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</h2>`+star()+chip(p)+late(S,t)+(S.bk&&add(S.bk,7)>=t?'':'<div class="c m">Back up your data: Settings → Show backup.</div>');
+ if(t<S.start)h+=`<div class=c>Your plan starts on ${S.start}. First target: ${p.days[0]?f(p.days[0].tg):0} h.</div>`;
+ else if(!r)h+=`<div class=c><b>Rest day.</b> Next work day ${nxw(S,t)}${p.days[0]?', target '+f(p.days[0].tg)+' h':''}.</div>`;
+ else h+=`<div class=c><div class=t>${f(r.tg)} h</div><div class=m>today's target</div><ul>${r.sl.map(x=>sli(S,r,x)).join('')||'<li>No target today (buffer days or all content done).</li>'}</ul>
+ <label class=big><input type=checkbox ${done?'checked':''} onchange=tick()> I hit today's target</label>
+ <div class=g><input id=lh type=number step=.25 min=0 placeholder="Hours done" style="width:7em"><button onclick=logH()>Log hours</button><button onclick=rep()>Re-plan today</button></div>
+ <div class=m>Logged today: ${f(r.lg||0)} h${r.st==='partial'?' (partial)':''}</div></div>`;
+ return h+`<div class="c m">${f(sum('d'))} of ${f(sum('h'))} h done · streak ${streak(S)} work days · projected finish ${fin(p)}</div>`},
+plan(){const S=st,p=pl(S);ann(S,p.days);
+ return'<h2>Plan</h2>'+(p.ok?'':'<div class="c bad">Infeasible at current settings. See Today for options.</div>')+'<div class=c><b>Next work days</b>'+p.days.slice(0,10).map(d=>`<div class=r><span>${d.ds}</span><span>${f(d.tg)} h</span></div><div class=m>${d.sl.map(x=>{const L=les(S,x.i,x.o,x.h);return e(S.tasks[x.i].t)+(L?': '+L.map(z=>e(z.l[0])).join('; '):'')}).join(' | ')}</div>`).join('')+'</div>'+tbl('Weekly targets (week starting)',grp(p.days,wk).slice(0,8))+tbl('Monthly targets',grp(p.days,d=>d.slice(0,7)))},
+road(){const S=st;return`<h2>Roadmap: Checkpoint 1</h2><div class=c>${Math.round(sum('d')/sum('h')*100)}% complete · ${f(sum('d'))} of ${f(sum('h'))} h</div>`+S.tasks.map((t,i)=>`<div class=c><div class=r><b>${e(t.t)}</b><span class=m>${t.k}</span></div><div class=m>${e(t.u)}</div>${syl(t)}<div class=bar><i style="width:${Math.min(100,t.d/t.h*100)}%"></i></div><div class=r><span class=m>${f(t.d)} / ${f(t.h)} h</span><button onclick="kn(${i})">${t.d>=t.h?'Reset':'I already know this'}</button></div></div>`).join('')},
+jour(){const S=st,p=pl(S),end=p.ok?(p.days.length?p.days[p.days.length-1].ds:td()):S.deadline;
+ let h=`<h2>Journey</h2><div class=c><b>1. Physics as of the 1920s</b><div class=m>${S.start} → deadline ${S.deadline} (fixed)</div><div class=eq>iħ ∂ψ/∂t = Ĥψ     G_μν + Λg_μν = (8πG/c⁴) T_μν</div><div class=bar><i style="width:${sum('d')/sum('h')*100}%"></i></div><div class=m>Projected finish ${p.ok?end:'not feasible'} · ${f(sum('h')-sum('d'))} h left</div></div>`,s=nxw(S,p.ok?end:S.deadline);
+ CP.forEach((c,i)=>{const en=adv(S,s,Math.ceil(c[1]/S.hpd));h+=`<div class=c><b>${i+2}. ${c[0]}</b><div class=m>Projected ${s} → ${en} · about ${c[1]} h at ${S.hpd} h/day · provisional</div><div class=eq>${c[2]}</div></div>`;s=nxw(S,en)});
+ return h+`<div class=c><b>5. Research frontier</b><div class=m>Open-ended. Starts about ${s}.</div><div class=eq>P ≟ NP</div></div><p class=m>Later checkpoints are estimates. They shift automatically when Checkpoint 1 moves.</p>`},
+settings(){const S=st,d=draft||(draft={deadline:S.deadline,hpd:S.hpd,max:S.max,buf:S.buf,off:[...S.off],custom:[...S.custom]}),N=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+ return`<h2>Settings</h2><div class=c><label>Checkpoint 1 deadline<input id=dl type=date value="${d.deadline}" oninput=upd()></label>
+ <label>Timeline slider: <b id=sd></b><input id=sl type=range min=-84 max=168 step=1 value="${dd(d.deadline,S.deadline)}" oninput=sv()></label><div class=g><button onclick="sh(-28)">−4 weeks</button><button onclick="sh(-14)">−2</button><button onclick="sh(14)">+2</button><button onclick="sh(28)">+4 weeks</button></div>
+ <label>Hours per day<input id=hp type=number step=.5 min=1 value="${d.hpd}" oninput=upd()></label>
+ <label>Maximum hours per day<input id=mx type=number step=.5 min=1 value="${d.max}" oninput=upd()></label>
+ <label>Buffer (work days kept free at the end)<input id=bf type=number min=0 value="${d.buf}" oninput=upd()></label>
+ <div>Days off each week</div><div class=g>${N.map((n,i)=>`<label class=k><input type=checkbox data-d=${i} ${d.off.includes(i)?'checked':''} onchange=upd()>${n}</label>`).join('')}</div>
+ <label>Extra day off<input id=co type=date></label><button onclick=addOff()>Add day off</button>
+ <div class=g>${d.custom.map(x=>`<button onclick="rmOff('${x}')">${x} ✕</button>`).join('')}</div></div>
+ <div class=c id=pv>${prev()}</div><div class=g><button class=pri onclick=apply()>Apply changes</button><button onclick="draft=null;render()">Reset</button></div>
+ <div class=c><b>Backup</b><p class=m>Copy this text somewhere safe. Paste a saved copy here to restore.</p><textarea id=bx rows=4></textarea><div class=g><button onclick=exp()>Show backup</button><button onclick=imp()>Restore from text</button></div></div>`}};
+const LS={
+"Diagnostic and setup":[
+["Diagnostic: find your gaps",2,"Take the course challenge for Calculus 1 and Calculus 2, then a mechanics unit test. Note every weak topic in a notebook. Mark modules you clearly pass as 'already know' in Roadmap.","Khan Academy: Calculus 1 and 2 course challenges; AP Physics 1 unit tests"],
+["Set up your study system",1.5,"Install Anki and make a deck called Physics-Maths. Create a notebook (paper or Obsidian) with an error-log page: every mistake gets one line saying why it happened.","Anki (free on desktop); Obsidian (free)"],
+["Set up Python",1.5,"Install Python and Jupyter (pip install numpy sympy matplotlib jupyter). Plot sin x and differentiate x^2 with SymPy once. Watch lecture 0.","python.org; CS50P (Harvard, free) lecture 0: functions and variables"]],
+"Calculus completion + vectors":[
+["Limits and derivatives from first principles",3,"Learn: the derivative as a limit of slopes and as a rate of change; power, sum, product and quotient rules. Do: 20 differentiation problems without notes.","3Blue1Brown Essence of Calculus ep. 1-3; Khan Academy Calculus 1 derivative exercises"],
+["Chain rule, implicit differentiation, related rates",4,"Learn: the chain rule as composition of rates; implicit differentiation; related-rates setups. Do: 10 related-rates word problems.","3Blue1Brown ep. 4 and 6; MIT 18.01SC implicit differentiation problem set"],
+["Exponentials, logarithms and e",3,"Learn: why d/dx e^x = e^x, the derivative of ln x, logarithmic differentiation. Do: re-derive each rule yourself.","3Blue1Brown ep. 5 (Euler's number); Khan Academy exponential and log derivatives"],
+["Applications: optimisation, linearisation, L'Hopital",4,"Learn: maxima and minima, linear approximation, Newton's method, indeterminate limits. Do: 8 optimisation problems and one Newton iteration by hand.","3Blue1Brown ep. 7 (limits and L'Hopital); MIT 18.01SC applications of differentiation"],
+["Mean value theorem and curve sketching",3,"Learn: the mean value theorem, concavity, inflection points, sketching a function from its derivatives. Do: sketch 6 functions.","MIT 18.01SC; Paul's Online Math Notes, Calculus I applications of derivatives"],
+["Integrals and the fundamental theorem",4,"Learn: area under a curve, Riemann sums, antiderivatives, both parts of the fundamental theorem. Do: 15 definite and indefinite integrals.","3Blue1Brown ep. 8-9; MIT 18.01SC integration"],
+["Substitution and integration by parts",5,"Learn: u-substitution as the chain rule in reverse; integration by parts from the product rule. Do: 15 problems of each kind.","MIT 18.01SC techniques of integration; Paul's Calculus II integration techniques"],
+["Trigonometric integrals and partial fractions",4,"Learn: powers of sin and cos, trig substitution, partial fractions. Do: 10 mixed problems; make Anki cards for the trig identities.","Paul's Online Math Notes, Calculus II; Khan Academy integration techniques"],
+["Improper integrals and applications",4,"Learn: integrals to infinity, volumes of revolution, arc length, centre of mass. Do: 8 problems and link each to a physical quantity.","Paul's Calculus II; MIT 18.01SC applications of integration"],
+["Sequences, series and convergence tests",5,"Learn: geometric series, comparison, ratio and integral tests, alternating series. Do: 15 convergence decisions.","MIT 18.01SC exploring the infinite; Paul's Calculus II sequences and series"],
+["Power and Taylor series",5,"Learn: radius of convergence; Taylor series of e^x, sin x, cos x and 1/(1-x); why sin x is about x for small angles. Do: derive each and check numerically in Python.","3Blue1Brown ep. 11 (Taylor series); Khan Academy Taylor and Maclaurin series"],
+["Vectors: dot product, cross product, lines and planes",6,"Learn: vectors as arrows and components, the dot product as projection, the cross product as area and torque, equations of lines and planes. Do: 15 problems and sketch each.","MIT 18.02SC vectors and matrices unit; Khan Academy vectors; 3Blue1Brown Essence of Linear Algebra ep. 1-2"]],
+"Newtonian mechanics refresh":[
+["Kinematics and projectile motion",3,"Learn: position, velocity and acceleration as derivatives and integrals; constant-acceleration formulas; projectile motion in 2D. Do: 12 problems, deriving each formula with calculus.","OpenStax University Physics Vol. 1 ch. 3-4; MIT 8.01 (Walter Lewin) kinematics lectures"],
+["Newton's laws and free-body diagrams",4,"Learn: the three laws, inertial frames, free-body diagrams, tension and normal forces. Do: 15 problems with a diagram for each.","OpenStax Vol. 1 ch. 5; MIT 8.01 Lewin lectures on Newton's laws"],
+["Friction, drag and circular motion",3,"Learn: static and kinetic friction, drag, centripetal acceleration and force. Do: 10 problems including a banked curve.","OpenStax Vol. 1 ch. 6"],
+["Work, energy and conservation of energy",4,"Learn: work as a line integral, kinetic and potential energy, conservative forces, power. Do: 12 problems and derive the work-energy theorem.","OpenStax Vol. 1 ch. 7-8; MIT 8.01 Lewin energy lectures"],
+["Momentum, impulse and collisions",4,"Learn: conservation of momentum, elastic and inelastic collisions, centre of mass. Do: 12 problems and simulate one collision in Python.","OpenStax Vol. 1 ch. 9"],
+["Rotation, torque and angular momentum",4,"Learn: moment of inertia, torque, rotational energy, conservation of angular momentum. Do: 12 problems and derive the moment of inertia of a disc by integration.","OpenStax Vol. 1 ch. 10-11; MIT 8.01 Lewin rotation lectures"],
+["Gravitation and Kepler's laws",3,"Learn: Newton's law of gravity, gravitational potential energy, orbits, escape velocity, Kepler's three laws. Do: derive orbital speed and escape velocity.","OpenStax Vol. 1 ch. 13"],
+["Mixed problem set",3,"Do: a timed problem set covering the whole module and mark it honestly. Log every error with its cause.","MIT 8.01SC Classical Mechanics problem sets with solutions (OCW)"],
+["Review and Anki",2,"Turn the error log into Anki cards (formulas, derivations, common traps). Redo the two worst problems from memory.","Anki; your own error log"]],
+"Multivariable calculus":[
+["Parametric curves and motion in space",4,"Learn: vector-valued functions, velocity and acceleration vectors, arc length. Do: 10 problems including 3D projectile motion.","MIT 18.02SC vectors and matrices; Paul's Online Math Notes, Calculus III vector functions"],
+["Functions of several variables and partial derivatives",5,"Learn: level curves and surfaces, partial derivatives, higher-order partials. Do: 15 problems and plot contours in Python.","Khan Academy multivariable calculus: partial derivatives; MIT 18.02SC partial derivatives"],
+["Gradient, directional derivative, tangent planes",5,"Learn: the gradient as steepest ascent, directional derivatives, linear approximation, the multivariable chain rule. Do: 15 problems.","Khan Academy: gradient and directional derivatives; MIT 18.02SC"],
+["Optimisation and Lagrange multipliers",5,"Learn: critical points, the second-derivative test, constrained optimisation with Lagrange multipliers (they return in mechanics). Do: 10 problems.","MIT 18.02SC partial derivatives unit; Paul's Calculus III"],
+["Double integrals and polar coordinates",5,"Learn: iterated integrals, changing the order, polar coordinates. Do: 12 problems.","MIT 18.02SC double and triple integrals; Khan Academy double integrals"],
+["Triple integrals, cylindrical and spherical coordinates",5,"Learn: triple integrals, the Jacobian, cylindrical and spherical coordinates (essential for electromagnetism and the hydrogen atom). Do: 12 problems.","MIT 18.02SC; Paul's Calculus III"],
+["Vector fields and line integrals",5,"Learn: vector fields, line integrals of scalar and vector fields, work done by a force field. Do: 12 problems.","Khan Academy: line integrals; MIT 18.02SC vector calculus"],
+["Conservative fields and Green's theorem",5,"Learn: path independence, potential functions, Green's theorem. Do: 10 problems and connect to conservative forces in mechanics.","MIT 18.02SC vector calculus; Khan Academy Green's theorem"],
+["Surface integrals, flux and the divergence theorem",6,"Learn: parametrised surfaces, flux, divergence, the divergence theorem. Do: 10 problems and interpret each as a physical flow.","MIT 18.02SC; Khan Academy surface integrals and divergence theorem"],
+["Curl and Stokes' theorem",5,"Learn: curl as local rotation and Stokes' theorem; summarise all the integral theorems on one page. Do: 10 problems and a gate-style review.","Khan Academy: divergence and curl; MIT 18.02SC"]]};
+function les(S,i,o,h){const L=LS[S.tasks[i].t];if(!L)return null;let c=0;const r=[];L.forEach(l=>{const a=c;c+=l[1];if(a<o+h-.01&&c>o+.01)r.push({l,c:a<o-.01?'continued from earlier':c>o+h+.01?'continues tomorrow':''})});return r}
+const lh=z=>`<div class=ls><b>${e(z.l[0])}</b> <span class=m>${f(z.l[1])} h${z.c?' · '+z.c:''}</span><div>${e(z.l[2])}</div><div class=m>📚 ${e(z.l[3])}</div></div>`;
+function sli(S,r,x){const t=S.tasks[x.i],o=Math.max(0,t.d-(r.ap||[]).filter(a=>a.i===x.i).reduce((a,b)=>a+b.h,0)),L=les(S,x.i,o,x.h);
+ return`<li><b>${e(t.t)}</b> <span class=m>${f(x.h)} h</span>`+(L?L.map(lh).join(''):`<div class=m>📚 ${e(t.u)}. The detailed daily syllabus for this module is added as you approach it.</div>`)+'</li>'}
+function ann(S,days){const a={};days.forEach(d=>d.sl.forEach(x=>{x.o=a[x.i]??S.tasks[x.i].d;a[x.i]=x.o+x.h}));return days}
+const syl=t=>LS[t.t]?`<details><summary class=m>Day-by-day syllabus (${LS[t.t].length} lessons)</summary>${LS[t.t].map((z,k)=>lh({l:z,c:''}).replace('<b>','<b>'+(k+1)+'. ')).join('')}</details>`:'';
+const dd=(a,b)=>Math.round((pdt(a)-pdt(b))/864e5);
+function lab(){const n=dd(draft.deadline,st.deadline);$('sd').textContent=draft.deadline+' ('+(n>0?'+':'')+Math.round(n/7*10)/10+' weeks)'}
+function sync(){$('dl').value=draft.deadline;$('sl').value=dd(draft.deadline,st.deadline);lab();$('pv').innerHTML=prev()}
+function sv(){draft.deadline=add(st.deadline,+$('sl').value);sync()}
+const E=[['iħ ∂ψ/∂t = Ĥψ','The Schrödinger equation: how matter behaves at the smallest scales.',1],['G_μν + Λg_μν = (8πG/c⁴) T_μν','Einstein\'s field equations: mass and energy bend spacetime.',1],['(ȧ/a)² = 8πGρ/3 − k/a² + Λ/3','The Friedmann equation: the expansion of the whole universe.',1],['(iγ^μ∂_μ − m)ψ = 0','The Dirac equation: quantum theory meets relativity and predicts antimatter.',3],['ℒ = −¼ F^a_μν F^aμν','Yang–Mills: the maths of the strong and weak forces, and a Millennium Problem.',3],['T_H = ħc³ / 8πGMk_B','Hawking temperature: where gravity, quantum theory and thermodynamics meet.',4],['ζ(s) = Σ n^−s = Π (1 − p^−s)^−1','Primes hidden inside a function; the Riemann Hypothesis lives here.',4],['ρ(∂ₜu + u·∇u) = −∇p + μ∇²u + f','Navier–Stokes: fluids, and an unsolved Millennium Problem.',4]];
+function star(){const q=E[Math.floor(Date.now()/864e5)%E.length];return`<div class="c q"><div class=eq>${q[0]}</div><div class=m>${q[1]} You will read this like a sentence by Checkpoint ${q[2]}.</div></div>`}
+const EQ=['iħ ∂ψ/∂t = Ĥψ','G_μν + Λg_μν = (8πG/c⁴) T_μν','∇·E = ρ/ε₀     ∇×B = μ₀J + μ₀ε₀ ∂E/∂t','(iγ^μ∂_μ − m)ψ = 0','r_s = 2GM/c²','T_H = ħc³ / 8πGMk_B','S = k_B c³A / 4Għ','[x̂, p̂] = iħ','(ȧ/a)² = 8πGρ/3 − k/a² + Λ/3','ℒ = −¼ F^a_μν F^aμν','ζ(s) = Σ n^−s = Π (1 − p^−s)^−1','ρ(∂ₜu + u·∇u) = −∇p + μ∇²u + f','Δx Δp ≥ ħ/2','S = −T ∫ dA','P ≟ NP','E² = (pc)² + (mc²)²','S = k_B ln Ω','δS = 0'];
+function bg(){const w=innerWidth,h=innerHeight,u=Math.min(w,h)/10;let z=7;const r=(a,b)=>{z=(z*9301+49297)%233280;return a+z/233280*(b-a)};
+ let s=`<svg width=${w} height=${h}><defs><radialGradient id=a><stop offset=.3 stop-color="#000"/><stop offset=.46 stop-color="#ffb347"/><stop offset=.62 stop-color="#ff6a3d" stop-opacity=".3"/><stop offset=1 stop-color="#ff6a3d" stop-opacity="0"/></radialGradient><radialGradient id=n><stop offset=0 stop-color="#7b5cff" stop-opacity=".35"/><stop offset=1 stop-color="#7b5cff" stop-opacity="0"/></radialGradient><radialGradient id=t><stop offset=0 stop-color="#fff"/><stop offset=.15 stop-color="#9fe8ff" stop-opacity=".8"/><stop offset=1 stop-color="#9fe8ff" stop-opacity="0"/></radialGradient></defs>`;
+ s+=`<circle cx=${.2*w} cy=${.25*h} r=${6*u} fill="url(#n)"/><circle cx=${.85*w} cy=${.5*h} r=${5*u} fill="url(#n)"/>`;
+ for(let i=0;i<80;i++)s+=`<circle cx=${r(0,w)} cy=${r(0,h)} r=${r(.4,1.3)} fill="#fff" opacity=${r(.2,.8)}/>`;
+ let p='';for(let x=0;x<=w;x+=6){const k=(x-w*.5)/(w*.22);p+=(x?'L':'M')+x+' '+(h*.46+u*.9*Math.sin(x/(u*.28))*Math.exp(-k*k))+' '}
+ s+=`<path d="${p}" fill="none" stroke="#5de0ec" stroke-width="1.5" opacity=".5"/>`;
+ const nx=.16*w,ny=.12*h;s+=`<circle cx=${nx} cy=${ny} r=${1.6*u} fill="url(#t)"/>`;
+ [1,1.7,2.4].forEach(k=>s+=`<ellipse cx=${nx} cy=${ny} rx=${1.5*u*k} ry=${.6*u*k} fill="none" stroke="#5de0ec" opacity=".3" transform="rotate(-28 ${nx} ${ny})"/>`);
+ s+=`<g class="sp" style="transform-origin:${nx}px ${ny}px"><line x1=${nx-3.2*u} y1=${ny} x2=${nx+3.2*u} y2=${ny} stroke="#bff3ff" stroke-width="2" opacity=".5"/></g>`;
+ const bx=.8*w,by=.84*h;s+=`<circle cx=${bx} cy=${by} r=${3.4*u} fill="url(#a)"/><ellipse cx=${bx} cy=${by} rx=${4.4*u} ry=${.7*u} fill="none" stroke="#ffb347" stroke-width="2" opacity=".55" transform="rotate(-16 ${bx} ${by})"/><circle cx=${bx} cy=${by} r=${1.05*u} fill="#000"/>`;
+ [.8,1.4,2].forEach((k,i)=>s+=`<circle cx=${.82*w+i*u*.5} cy=${.1*h+i*u*.3} r=${k*u} fill="none" stroke="${i%2?'#ff7ad9':'#8f7bff'}" opacity=".3"/>`);
+ const fs=Math.max(13,Math.min(22,u*.4));
+ EQ.forEach((q,i)=>{const x=(i%2?r(.3,.55):r(0,.25))*w,y=(i+.6)/EQ.length*h,a=r(-12,12);s+=`<text x=${x} y=${y} transform="rotate(${a} ${x} ${y})" font-size=${fs} font-style="italic" font-family="Cambria,'Cambria Math',Georgia,serif" fill="#cfd9ff" opacity=".14">${q}</text>`});
+ $('bg').innerHTML=s+'</svg>'}
+function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));$('v').innerHTML=views[tab]();if(tab==='settings')lab()}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;if(tab!=='settings')draft=null;render()});
+bg();addEventListener("resize",bg);render();
+</script></body></html>
