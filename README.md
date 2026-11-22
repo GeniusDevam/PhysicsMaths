@@ -2,6 +2,8 @@
 
 A free, offline study system built around one ambitious goal: **learn physics and mathematics from scratch, all the way toward the research frontier** (quantum gravity, string theory, a theory of everything, the Millennium Prize problems), using only free resources.
 
+**Try it now:** [open the FrontierPath tracker](https://geniusdevam.github.io/PhysicsMaths/apps/frontierpath/) in your browser. It runs entirely on your device and saves progress in that browser.
+
 It has three parts:
 
 1. **A realistic multi-year roadmap**, split into checkpoints, with a detailed 7-month first checkpoint (physics as it stood in the 1920s).
@@ -71,7 +73,7 @@ Your progress is saved in that browser's local storage. Browsers keep storage se
 
 It builds the example config, smoke-tests FrontierPath and the example app, and confirms that the app copy inside the coach skill and the packaged `.skill` files match their sources.
 
-**Host it free.** Because each app is a single static file, any free static host works. For example, enabling GitHub Pages on this repo would serve the apps under `/apps/frontierpath/`. This is optional and not enabled by default.
+**Host it free.** Because each app is a single static file, any free static host works. This repository already serves FrontierPath on GitHub Pages at [https://geniusdevam.github.io/PhysicsMaths/apps/frontierpath/](https://geniusdevam.github.io/PhysicsMaths/apps/frontierpath/).
 
 ## Using the tracker apps
 
