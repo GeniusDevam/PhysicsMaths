@@ -114,7 +114,7 @@ The goal is split into checkpoints so progress is visible and the plan can be re
 | 4 | Frontier entry: string theory, supersymmetry, CFT, quantum gravity, and the maths behind the Millennium Problems | 12 to 18 months |
 | 5 | Research frontier: pick a problem, read the literature, write, find mentors | open-ended |
 
-**Checkpoint 1 in the app:** 27 tasks totalling 837 hours (content, seven monthly gates and a capstone), planned for 5 Oct 2026 to 30 Apr 2027 at 6 hours per weekday, weekends off, with a 10-work-day buffer. Day-by-day lessons with exact resources are written for the first four modules (diagnostic and setup, calculus and vectors, Newtonian mechanics, multivariable calculus, 135 hours in total). Later modules show their resource list until their lessons are written. The Journey tab projects Checkpoints 2 to 5 from their estimated hours.
+**Checkpoint 1 in the app:** 27 tasks totalling 837 hours (content, seven monthly gates and a capstone), planned over 207 days (about 7 months) starting the day you first open the app, at 6 hours per weekday, weekends off, with a 10-work-day buffer. The original plan ran from 5 Oct 2026 to 30 Apr 2027; change the deadline and hours in Settings. Day-by-day lessons with exact resources are written for the first four modules (diagnostic and setup, calculus and vectors, Newtonian mechanics, multivariable calculus, 135 hours in total). Later modules show their resource list until their lessons are written. The Journey tab projects Checkpoints 2 to 5 from their estimated hours.
 
 The app has a deep-space look (pulsar, black hole, multiverse bubbles, real equations drawn faintly in the background) and a "north star" equation card each day, tied to the checkpoint where you will be able to read it fluently.
 
