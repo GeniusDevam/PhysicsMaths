@@ -232,7 +232,6 @@ Full rules are in `skills/physics-maths-mastery/references/scheduling.md`.
 2. Test the apps by hand in common browsers and on phones; fix what turns up.
 3. Add the unimplemented features above, starting with per-task check boxes and a burn-up chart.
 4. Write detailed tasks for Checkpoints 2 to 5 when you reach them, using your real pace from Checkpoint 1.
-5. Choose a license (see below).
 
 ## How this was made
 
@@ -240,4 +239,6 @@ Designed and built in a long working session with Claude (Anthropic): the roadma
 
 ## License
 
-No license has been chosen yet. Until one is added, the default copyright rules apply (all rights reserved), even though the repository is public.
+Free for non-commercial use under the [PolyForm Noncommercial License 1.0.0](LICENSE.md): personal projects, study, research, hobby use, and use by charities, schools and public bodies. If you share this project or build on it, keep the `Required Notice` line from the license and credit GeniusDevam with a link to this repository.
+
+Commercial use needs a separate licence. To arrange one, open an issue titled "Commercial licence" in this repository or contact [@GeniusDevam](https://github.com/GeniusDevam) on GitHub.
